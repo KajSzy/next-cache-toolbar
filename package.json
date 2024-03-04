@@ -1,0 +1,78 @@
+{
+  "name": "next-cache-toolbar",
+  "version": "0.1.0",
+  "description": "Toolbar with all cached data in Next.js app router",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "rimraf dist && bunchee && tailwindcss -i src/style.css -o dist/style.css --minify",
+    "dev": "concurrently --names 'compile,tailwind,type-check' --prefix-colors 'green,white,white' --kill-others 'npm run dev:compile' 'npm run dev:tailwind' 'npm run dev:type-check'",
+    "dev:type-check": "tsc --watch --preserveWatchOutput --noEmit",
+    "dev:compile": "bunchee --watch",
+    "dev:tailwind": "tailwindcss -i src/style.css -o dist/style.css --watch"
+  },
+  "author": "Kajetan Szymczak <kajtszymczak@gmail.com>",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tooltip": "^1.0.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.344.0",
+    "next": "^14",
+    "react": "^18",
+    "react-dom": "^18",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "@types/node": "^18.19.21",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.18",
+    "bunchee": "^4.4.8",
+    "concurrently": "^8.2.2",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.35",
+    "rimraf": "^5.0.5",
+    "tailwindcss": "^3.4.1",
+    "turbo": "^1.12.4",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "next": "^14",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/es/index.mjs",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/es/index.d.mts",
+        "default": "./dist/es/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./style.css": {
+      "import": {
+        "default": "./dist/style.css"
+      },
+      "require": {
+        "default": "./dist/style.css"
+      }
+    }
+  }
+}
