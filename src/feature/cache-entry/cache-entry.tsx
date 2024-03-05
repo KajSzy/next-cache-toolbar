@@ -1,8 +1,12 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { Braces } from "lucide-react";
 import { useMemo } from "react";
+import JsonView from "react18-json-view";
 import { NextCacheFileData } from "../cache-entries/cache-entries-schema";
 
 type Props = {
@@ -35,12 +39,20 @@ export const CacheEntry = (props: Props) => {
 				{props.cacheEntry.tags.join("\n")}
 			</TableCell>
 			<TableCell>{props.cacheEntry.data?.headers.date}</TableCell>
-			{/* TODO: add body preview */}
-			{/* <TableCell className="nct-flex nct-justify-center">
-				<Button variant="ghost" size="icon">
-					<Braces size={16} />
-				</Button>
-			</TableCell> */}
+			<Dialog>
+				<DialogTrigger asChild>
+					<TableCell className="nct-flex nct-justify-center">
+						<Button variant="ghost" size="icon">
+							<Braces size={16} />
+						</Button>
+					</TableCell>
+				</DialogTrigger>
+				<DialogContent className="sm:nct-max-w-3xl nct-max-h-[65vh] nct-overflow-y-auto nct-overflow-x-hidden">
+					<div className="nct-flex nct-items-center nct-space-x-2">
+						<JsonView src={props.cacheEntry.data.body} />
+					</div>
+				</DialogContent>
+			</Dialog>
 		</TableRow>
 	);
 };

@@ -1,6 +1,6 @@
 {
   "name": "next-cache-toolbar",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Toolbar with all cached data in Next.js app router",
   "scripts": {
     "prepublish": "npm run build",
@@ -17,6 +17,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
@@ -25,6 +26,7 @@
     "next": "^14",
     "react": "^18",
     "react-dom": "^18",
+    "react18-json-view": "^0.2.7",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"

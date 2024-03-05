@@ -15,7 +15,7 @@
     "declaration": true,
     "sourceMap": true,
     "declarationMap": true,
-    "lib": ["es2022", "ESNext.Array"],
+    "lib": ["es2022", "ESNext.Array", "DOM"],
     "jsx": "react-jsx",
     "incremental": false,
     "baseUrl": ".",
