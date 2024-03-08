@@ -10,7 +10,13 @@
     "dev:compile": "bunchee --watch",
     "dev:tailwind": "tailwindcss -i src/style.css -o dist/style.css --watch"
   },
-  "author": "Kajetan Szymczak <kajtszymczak@gmail.com>",
+  "author": {
+    "name": "Kajetan Szymczak"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KajSzy/next-cache-toolbar"
+  },
   "engines": {
     "node": ">=18",
     "pnpm": ">=8"
@@ -33,9 +39,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
-    "@types/node": "^18.19.21",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/node": "^20.11.25",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
     "autoprefixer": "^10.4.18",
     "bunchee": "^4.4.8",
     "concurrently": "^8.2.2",
@@ -43,8 +49,8 @@
     "postcss": "^8.4.35",
     "rimraf": "^5.0.5",
     "tailwindcss": "^3.4.1",
-    "turbo": "^1.12.4",
-    "typescript": "^5"
+    "turbo": "^1.12.5",
+    "typescript": "^5.4.2"
   },
   "peerDependencies": {
     "next": "^14",

@@ -1,5 +1,4 @@
-import { existsSync } from "fs";
-import { readFile, readdir } from "fs/promises";
+import { existsSync, promises } from "fs";
 import { ZodError } from "zod";
 import { NextCacheFileData, nextCacheFileSchema } from "./cache-entries-schema";
 
@@ -9,7 +8,7 @@ export const getCacheFiles = async () => {
 	if (!existsSync(cachePath)) {
 		return;
 	}
-	const files = await readdir(cachePath);
+	const files = await promises.readdir(cachePath);
 
 	const cacheFiles = new Map<string, NextCacheFileData>();
 
@@ -19,7 +18,7 @@ export const getCacheFiles = async () => {
 			continue;
 		}
 		try {
-			const fileContent = await readFile(`${cachePath}/${file}`);
+			const fileContent = await promises.readFile(`${cachePath}/${file}`);
 			const cacheEntry = nextCacheFileSchema.parse(
 				JSON.parse(fileContent.toString()),
 			);
