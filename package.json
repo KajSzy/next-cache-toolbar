@@ -1,6 +1,6 @@
 {
   "name": "next-cache-toolbar",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Toolbar with all cached data in Next.js app router",
   "scripts": {
     "prepublish": "npm run build",
