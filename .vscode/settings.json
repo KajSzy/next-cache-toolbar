@@ -1,16 +1,4 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always",
-    "source.organizeImports": "always",
-    "quickfix.biome": "explicit",
-    "source.organizeImports.biome": "explicit"
-  },
   "editor.defaultFormatter": "biomejs.biome",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  }
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

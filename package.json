@@ -1,6 +1,6 @@
 {
   "name": "next-cache-toolbar",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Toolbar with all cached data in Next.js app router",
   "scripts": {
     "prepublish": "npm run build",
@@ -43,7 +43,7 @@
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "autoprefixer": "^10.4.18",
-    "bunchee": "^4.4.8",
+    "bunchee": "5.0.0-beta.4",
     "concurrently": "^8.2.2",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.35",

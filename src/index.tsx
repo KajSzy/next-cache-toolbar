@@ -1,55 +1,76 @@
-"use server";
-
-import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Braces, PanelBottomCloseIcon } from "lucide-react";
-import { getCacheFiles } from "./feature/cache-entries/getCacheEntries";
-import { CachePanelContextProvider } from "./feature/cache-panel-context/cache-panel-context";
-import { CachePanelHead } from "./feature/cache-panel-context/cache-panel-head";
-import { CachePanelTable } from "./feature/cache-panel-context/cache-panel-table";
-import { CachePanelTrigger } from "./feature/cache-panel-context/cache-panel-trigger";
-import { CacheTable } from "./feature/cache-panel-context/cache-panel-wrapper";
-import { RefreshDataButton } from "./feature/refresh-data-button/refresh-data-button";
+import { getCacheFiles } from "./actions/getCacheEntries";
+import { TableHead, TableHeader, TableRow } from "./components/ui/table";
+import { CachePanelContextProvider } from "./feature/cache-panel/cache-panel-context";
+import { CachePanelTable } from "./feature/cache-panel/cache-panel-table";
+import { CachePanelTrigger } from "./feature/cache-panel/cache-panel-trigger";
+import { CacheTable } from "./feature/cache-panel/cache-panel-wrapper";
+import { RefreshDataButton } from "./feature/cache-panel/cache-refresh-data";
+import { CachePanelHead } from "./feature/cache-table/cache-panel-head";
 
-export async function NextCacheToolbar() {
-	const files = await getCacheFiles();
+type Props = {
+  /**
+   * If true, the cache table will automatically refresh when the pathname changes.
+   * @default false
+   */
+  autoRefresh?: boolean;
+  /**
+   * The interval in milliseconds to refresh the cache table.
+   * @default 10000
+   */
+  interval?: number;
+};
 
-	const cacheEntries = Array.from(files?.entries() ?? []);
+export async function NextCacheToolbar({
+  autoRefresh = false,
+  interval = 10000,
+}: Props) {
+  const files = await getCacheFiles();
 
-	return (
-		<div id="next-cache-toolbar" className="nct-text-primary nct-font-mono">
-			<CachePanelContextProvider>
-				<CachePanelTrigger className="nct-fixed nct-rounded-full nct-bottom-4 nct-right-4 nct-bg-gradient-to-r nct-from-fuchsia-500 nct-to-cyan-500">
-					<Braces />
-				</CachePanelTrigger>
-				<CacheTable>
-					<TableHeader className="nct-sticky nct-top-0 nct-bg-background">
-						<TableRow>
-							<CachePanelHead sortingProperty="url" className="nct-w-[300px]">
-								URL
-							</CachePanelHead>
-							<CachePanelHead sortingProperty="revalidate">
-								Revalidate
-							</CachePanelHead>
-							<CachePanelHead sortingProperty="tags">Tags</CachePanelHead>
-							<CachePanelHead
-								sortingProperty="timestamp"
-								className="nct-w-[300px]"
-							>
-								Timestamp
-							</CachePanelHead>
-							<TableHead>
-								<div className="nct-flex nct-items-center nct-justify-end nct-gap-2">
-									<RefreshDataButton />
-									<CachePanelTrigger>
-										<PanelBottomCloseIcon />
-									</CachePanelTrigger>
-								</div>
-							</TableHead>
-						</TableRow>
-					</TableHeader>
-					<CachePanelTable entries={cacheEntries} />
-				</CacheTable>
-			</CachePanelContextProvider>
-		</div>
-	);
+  return (
+    <div id="next-cache-toolbar" className="nct-text-primary nct-font-mono">
+      <CachePanelContextProvider entries={files ?? []}>
+        <CachePanelTrigger className="nct-fixed nct-rounded-full nct-bottom-4 nct-right-4 nct-bg-gradient-to-r nct-from-fuchsia-500 nct-to-cyan-500">
+          <Braces />
+        </CachePanelTrigger>
+        <CacheTable>
+          <TableHeader className="nct-sticky nct-top-0 nct-bg-background">
+            <TableRow>
+              <CachePanelHead
+                sortingProperty="url"
+                className="nct-w-[300px]"
+                withFilter
+              >
+                URL
+              </CachePanelHead>
+              <CachePanelHead sortingProperty="revalidate">
+                Revalidate (ms)
+              </CachePanelHead>
+              <CachePanelHead sortingProperty="tags" withFilter>
+                Tags
+              </CachePanelHead>
+              <CachePanelHead
+                sortingProperty="timestamp"
+                className="nct-w-[300px]"
+              >
+                Timestamp
+              </CachePanelHead>
+              <TableHead>
+                <div className="nct-flex nct-items-center nct-justify-end nct-gap-2">
+                  <RefreshDataButton
+                    enabled={autoRefresh}
+                    interval={interval}
+                  />
+                  <CachePanelTrigger>
+                    <PanelBottomCloseIcon />
+                  </CachePanelTrigger>
+                </div>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <CachePanelTable />
+        </CacheTable>
+      </CachePanelContextProvider>
+    </div>
+  );
 }
