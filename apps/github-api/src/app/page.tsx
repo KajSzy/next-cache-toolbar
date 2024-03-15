@@ -1,5 +1,14 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { getMostPopularRepositories } from "@/actions/repositories";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { StarIcon } from "lucide-react";
+import Link from "next/link";
 
 const getNextJSCacheIssues = async () => {
 	try {
@@ -40,98 +49,56 @@ const getClosedIssues = async () => {
 	}
 };
 
+const orgsToFetchRepos = ["vercel", "facebook", "shadcn-ui", "pmndrs"];
+
 export default async function Home() {
-	const issues = await getNextJSCacheIssues();
-	const closedIssues = await getClosedIssues();
+	const repos = await Promise.all(
+		orgsToFetchRepos.map(getMostPopularRepositories),
+	);
 
 	return (
-		<main className={styles.main}>
-			<div className={styles.description}>
-				<p>
-					Get started by editing&nbsp;
-					<code className={styles.code}>src/app/page.tsx</code>
-				</p>
-				<div>
-					<a
-						href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						By{" "}
-						<Image
-							src="/vercel.svg"
-							alt="Vercel Logo"
-							className={styles.vercelLogo}
-							width={100}
-							height={24}
-							priority
-						/>
-					</a>
-				</div>
-			</div>
-
-			<div className={styles.center}>
-				<Image
-					className={styles.logo}
-					src="/next.svg"
-					alt="Next.js Logo"
-					width={180}
-					height={37}
-					priority
-				/>
-			</div>
-
-			<div className={styles.grid}>
-				<a
-					href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					className={styles.card}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<h2>
-						Docs <span>-&gt;</span>
-					</h2>
-					<p>Find in-depth information about Next.js features and API.</p>
-				</a>
-
-				<a
-					href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					className={styles.card}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<h2>
-						Learn <span>-&gt;</span>
-					</h2>
-					<p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-				</a>
-
-				<a
-					href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					className={styles.card}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<h2>
-						Templates <span>-&gt;</span>
-					</h2>
-					<p>Explore starter templates for Next.js.</p>
-				</a>
-
-				<a
-					href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-					className={styles.card}
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<h2>
-						Deploy <span>-&gt;</span>
-					</h2>
-					<p>
-						Instantly deploy your Next.js site to a shareable URL with Vercel.
-					</p>
-				</a>
-			</div>
-		</main>
+		<Tabs defaultValue="vercel" className="w-[520px]">
+			<TabsList
+				className="grid w-full"
+				style={{
+					gridTemplateColumns: `repeat(${orgsToFetchRepos.length}, minmax(0, 1fr))`,
+				}}
+			>
+				{orgsToFetchRepos.map((org) => (
+					<TabsTrigger key={org} value={org}>
+						{org}
+					</TabsTrigger>
+				))}
+			</TabsList>
+			{orgsToFetchRepos.map((org, index) => (
+				<TabsContent key={org} value={org}>
+					<Card>
+						<CardHeader>
+							<CardTitle>{org}</CardTitle>
+							<CardDescription>
+								{repos[index].length} most starred {org} repos
+							</CardDescription>
+						</CardHeader>
+						<CardContent className="space-y-2">
+							<div className="flex flex-col gap-2">
+								{repos[index].map((repo) => (
+									<Link
+										className="flex items-center hover:underline"
+										key={repo.id}
+										href={`/${org}/repo/${repo.name}`}
+									>
+										<div className="text-xl">{repo.name}</div>
+										<div className="flex items-center ml-auto">
+											<div>{repo.stargazers_count}</div>
+											<StarIcon width={18} height={18} />
+										</div>
+									</Link>
+								))}
+							</div>
+						</CardContent>
+					</Card>
+				</TabsContent>
+			))}
+		</Tabs>
 	);
 }
