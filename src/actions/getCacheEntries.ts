@@ -1,8 +1,8 @@
 "use server";
 
-import { existsSync, promises } from "fs";
 import { ZodError } from "zod";
 import { NextCacheFileData, nextCacheFileSchema } from "./cache-entries-schema";
+import { existsSync, promises } from "node:fs";
 
 const cachePath = ".next/cache/fetch-cache";
 
