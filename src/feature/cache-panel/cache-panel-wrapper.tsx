@@ -12,7 +12,7 @@ export const CacheTable = (props: React.PropsWithChildren) => {
   }
 
   return (
-    <div className="nct-fixed nct-bottom-0 nct-inset-x-0 nct-z-50 nct-bg-background nct-overflow-x-auto nct-max-h-[35vh]">
+    <div className="nct-fixed nct-bottom-0 nct-inset-x-0 nct-z-50 nct-bg-background nct-overflow-x-auto nct-h-[480px]">
       <Table>{props.children}</Table>
     </div>
   );
