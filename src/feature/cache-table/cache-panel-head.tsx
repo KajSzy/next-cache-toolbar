@@ -101,16 +101,22 @@ export const CachePanelHead = ({
   };
 
   return (
-    <TableHead className={cn("group", className)} {...props}>
+    <TableHead className={cn("group", className)} {...props} aria-sort="ascending">
       <div
         className={cn(
           "nct-flex nct-items-center nct-gap-2 nct-py-2",
           sorting?.key === sortingProperty && "nct-underline"
         )}
       >
-        <div onClick={onHeadClick} onKeyDown={onHeadClick}>
+        <Button
+          variant="link"
+          size="sm"
+          className={cn('nct-px-0')}
+          onClick={onHeadClick}
+          onKeyDown={onHeadClick}
+        >
           {children}
-        </div>
+        </Button>
         {sortingDirection === "asc" && <ArrowDownAZIcon />}
         {sortingDirection === "desc" && <ArrowUpAZIcon />}
         {withFilter && (
