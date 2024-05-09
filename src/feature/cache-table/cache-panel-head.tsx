@@ -12,6 +12,7 @@ import {
 } from "../cache-panel/cache-panel-context";
 
 type TableHeadProps = Omit<React.ComponentProps<typeof TableHead>, "onClick">;
+type AriaSortAttribute = 'ascending' | 'descending' | undefined;
 
 type Props = TableHeadProps &
   React.PropsWithChildren<{
@@ -100,12 +101,19 @@ export const CachePanelHead = ({
     }
   };
 
+  const isActiveSortProperty = sorting?.key === sortingProperty;
+  const ariaSortAttribute: AriaSortAttribute = isActiveSortProperty
+    ? sortingDirection === "asc"
+        ? 'ascending'
+        : 'descending'
+    : undefined;
+
   return (
-    <TableHead className={cn("group", className)} {...props} aria-sort="ascending">
+    <TableHead className={cn("group", className)} {...props} aria-sort={ariaSortAttribute}>
       <div
         className={cn(
           "nct-flex nct-items-center nct-gap-2 nct-py-2",
-          sorting?.key === sortingProperty && "nct-underline"
+          isActiveSortProperty && "nct-underline"
         )}
       >
         <Button
