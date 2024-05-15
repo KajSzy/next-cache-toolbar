@@ -18,14 +18,14 @@ const buttonVariants = cva(
           "nct-bg-secondary nct-text-secondary-foreground hover:nct-bg-secondary/80",
         ghost: "hover:nct-bg-accent hover:nct-text-accent-foreground",
         link: "nct-text-primary nct-underline-offset-4 hover:nct-underline",
-        linkTable: "nct-text-muted-foreground hover:nct-underline",
+        linkTable: "nct-text-muted-foreground",
       },
       size: {
         default: "nct-h-10 nct-px-4 nct-py-2",
         sm: "nct-h-9 nct-rounded-md nct-px-3",
         lg: "nct-h-11 nct-rounded-md nct-px-8",
         icon: "nct-h-10 nct-w-10",
-        text: "nct-h-10",
+        text: "h-auto",
       },
     },
     defaultVariants: {
