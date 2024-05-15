@@ -117,9 +117,8 @@ export const CachePanelHead = ({
         )}
       >
         <Button
-          variant="link"
-          size="sm"
-          className={cn('nct-px-0')}
+          variant="linkTable"
+          size="text"
           onClick={onHeadClick}
           onKeyDown={onHeadClick}
         >
