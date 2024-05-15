@@ -124,8 +124,8 @@ export const CachePanelHead = ({
         >
           {children}
         </Button>
-        {sortingDirection === "asc" && <ArrowDownAZIcon />}
-        {sortingDirection === "desc" && <ArrowUpAZIcon />}
+        {sortingDirection === "asc" && <ArrowDownAZIcon aria-hidden />}
+        {sortingDirection === "desc" && <ArrowUpAZIcon aria-hidden />}
         {withFilter && (
           <div className="ml-auto">
             {!filterInputVisible && (
