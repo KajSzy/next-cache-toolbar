@@ -12,7 +12,6 @@ import {
 } from "../cache-panel/cache-panel-context";
 
 type TableHeadProps = Omit<React.ComponentProps<typeof TableHead>, "onClick">;
-type AriaSortAttribute = 'ascending' | 'descending' | undefined;
 
 type Props = TableHeadProps &
   React.PropsWithChildren<{
@@ -102,7 +101,7 @@ export const CachePanelHead = ({
   };
 
   const isActiveSortProperty = sorting?.key === sortingProperty;
-  const ariaSortAttribute: AriaSortAttribute = isActiveSortProperty
+  const ariaSortAttribute = isActiveSortProperty
     ? sortingDirection === "asc"
         ? 'ascending'
         : 'descending'
