@@ -100,19 +100,31 @@ export const CachePanelHead = ({
     }
   };
 
+  const isActiveSortProperty = sorting?.key === sortingProperty;
+  const ariaSortAttribute = isActiveSortProperty
+    ? sortingDirection === "asc"
+        ? 'ascending'
+        : 'descending'
+    : undefined;
+
   return (
-    <TableHead className={cn("group", className)} {...props}>
+    <TableHead className={cn("group", className)} {...props} aria-sort={ariaSortAttribute}>
       <div
         className={cn(
           "nct-flex nct-items-center nct-gap-2 nct-py-2",
-          sorting?.key === sortingProperty && "nct-underline"
+          isActiveSortProperty && "nct-underline"
         )}
       >
-        <div onClick={onHeadClick} onKeyDown={onHeadClick}>
+        <Button
+          variant="linkTable"
+          size="text"
+          onClick={onHeadClick}
+          onKeyDown={onHeadClick}
+        >
           {children}
-        </div>
-        {sortingDirection === "asc" && <ArrowDownAZIcon />}
-        {sortingDirection === "desc" && <ArrowUpAZIcon />}
+        </Button>
+        {sortingDirection === "asc" && <ArrowDownAZIcon aria-hidden />}
+        {sortingDirection === "desc" && <ArrowUpAZIcon aria-hidden />}
         {withFilter && (
           <div className="ml-auto">
             {!filterInputVisible && (
