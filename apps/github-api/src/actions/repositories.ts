@@ -14,6 +14,11 @@ export async function getMostPopularRepositories(owner: string) {
 				tags: ["repos", owner],
 			},
 		});
+		if (!result.ok) {
+			throw Error("Error fetching repositories", {
+				cause: result.statusText,
+			});
+		}
 		const data = await result.json();
 		return data.items;
 	} catch (error) {
@@ -38,6 +43,11 @@ export async function getIssues(owner: string, repo: string) {
 				tags: ["issues", owner, repo],
 			},
 		});
+		if (!result.ok) {
+			throw Error("Error fetching repositories", {
+				cause: result.statusText,
+			});
+		}
 		const data = await result.json();
 		return data.items;
 	} catch (error) {
