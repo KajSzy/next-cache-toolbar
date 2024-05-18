@@ -10,45 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StarIcon } from "lucide-react";
 import Link from "next/link";
 
-const getNextJSCacheIssues = async () => {
-	try {
-		const url = new URL("https://api.github.com/repos/vercel/next.js/issues");
-		url.searchParams.append("q", "is:open is:issue cache");
-		const result = await fetch(url, {
-			headers: {
-				Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-			},
-			next: {
-				revalidate: 86400,
-				tags: ["issues"],
-			},
-		});
-		return result.json();
-	} catch (error) {
-		console.error(error);
-		throw Error("Error fetching issues");
-	}
-};
-
-const getClosedIssues = async () => {
-	try {
-		const url = new URL("https://api.github.com/repos/vercel/next.js/issues");
-		url.searchParams.append("q", "is:close is:issue cache");
-		const result = await fetch(url, {
-			headers: {
-				Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-			},
-			next: {
-				revalidate: 30,
-			},
-		});
-		return result.json();
-	} catch (error) {
-		console.error(error);
-		throw Error("Error fetching issues");
-	}
-};
-
 const orgsToFetchRepos = ["vercel", "facebook", "shadcn-ui", "pmndrs"];
 
 export default async function Home() {
