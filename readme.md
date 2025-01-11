@@ -4,11 +4,9 @@ A toolbar that helps to identify [data cache](https://nextjs.org/docs/app/buildi
 
 ![Example](./assets/example_image.png)
 
-## Preview cached body
-
 ![Example](./assets/body_preview.png)
 
-## Use
+## How to use it?
 
 `next-cache-toolbar` requires to use [app router](https://nextjs.org/docs/app/building-your-application/caching#data-cache)
 

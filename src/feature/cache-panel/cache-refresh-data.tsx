@@ -9,42 +9,41 @@ import { useEffect, useTransition } from "react";
 import { useCachePanelContext } from "./cache-panel-context";
 
 type Props = {
-  interval: number;
-  enabled: boolean;
+	interval: number;
+	enabled: boolean;
 };
 
 export function RefreshDataButton({ enabled, interval }: Props) {
-  const { setEntries } = useCachePanelContext();
-  const [isPending, startTransition] = useTransition();
-  const pathname = usePathname();
+	const { setEntries } = useCachePanelContext();
+	const [isPending, startTransition] = useTransition();
+	const pathname = usePathname();
 
-  const refreshData = () => {
-    startTransition(async () => {
-      const files = await serverActions.getCacheFiles();
-      setEntries(files ?? []);
-    });
-  };
+	const refreshData = () => {
+		startTransition(async () => {
+			const files = await serverActions.getCacheFiles();
+			setEntries(files ?? []);
+		});
+	};
 
-  useEffect(() => {
-    console.log("pathname changed", pathname);
-    refreshData();
-  }, [pathname]);
+	useEffect(() => {
+		refreshData();
+	}, [pathname]);
 
-  useEffect(() => {
-    if (!enabled) {
-      return;
-    }
-    const intervalId = setInterval(refreshData, interval);
-    return () => clearInterval(intervalId);
-  }, [enabled, interval]);
+	useEffect(() => {
+		if (!enabled) {
+			return;
+		}
+		const intervalId = setInterval(refreshData, interval);
+		return () => clearInterval(intervalId);
+	}, [enabled, interval]);
 
-  return (
-    <Button variant="outline" size="icon" onClick={refreshData}>
-      <Loader2
-        className={cn("nct-h-4 nct-w-4", {
-          "nct-animate-spin": isPending,
-        })}
-      />
-    </Button>
-  );
+	return (
+		<Button variant="outline" size="icon" onClick={refreshData}>
+			<Loader2
+				className={cn("nct-h-4 nct-w-4", {
+					"nct-animate-spin": isPending,
+				})}
+			/>
+		</Button>
+	);
 }
