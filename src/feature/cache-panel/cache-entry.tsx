@@ -11,7 +11,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { Braces } from "lucide-react";
 import JsonView from "react18-json-view";
 
 type Props = {
@@ -19,7 +18,7 @@ type Props = {
 };
 
 const getEntryRevalidateLeft = (cacheEntry: NextCacheFileData) => {
-	if (!cacheEntry.data?.headers.date || !cacheEntry.revalidate) {
+	if (!cacheEntry.data?.headers?.date || !cacheEntry.revalidate) {
 		return;
 	}
 	const cacheEntryDate = new Date(cacheEntry.data?.headers.date);
@@ -37,7 +36,7 @@ export const CacheEntry = (props: Props) => {
 	return (
 		<TableRow>
 			<TableCell className="nct-truncate nct-max-w-[25vw]">
-				{props.cacheEntry.data?.url}
+				{props.cacheEntry.data.url}
 			</TableCell>
 			<TableCell title={cacheEntryRevalidateLeft?.toString() ?? "-"}>
 				{isStale ? <Badge>STALE</Badge> : (props.cacheEntry.revalidate ?? "-")}
@@ -45,24 +44,22 @@ export const CacheEntry = (props: Props) => {
 			<TableCell className="nct-break-before-all">
 				[{props.cacheEntry.tags.join(",")}]
 			</TableCell>
-			<TableCell>{props.cacheEntry.data?.headers.date}</TableCell>
+			<TableCell>{props.cacheEntry.timestamp.toLocaleString()}</TableCell>
 			<Dialog>
 				<DialogTrigger asChild>
 					<TableCell className="nct-flex nct-justify-center">
-						<Button variant="ghost" size="icon">
-							<Braces size={16} />
-						</Button>
+						<Button>show content</Button>
 					</TableCell>
 				</DialogTrigger>
 				<DialogContent className="sm:nct-max-w-3xl nct-max-h-[65vh] nct-overflow-y-auto nct-overflow-x-hidden">
 					<DialogTitle className="nct-hidden">
-						{props.cacheEntry.data?.url}
+						{props.cacheEntry.data.url}
 					</DialogTitle>
 					<DialogDescription className="nct-hidden">
-						{props.cacheEntry.data?.url}
+						{props.cacheEntry.data.url}
 					</DialogDescription>
 					<div className="nct-flex nct-items-center nct-space-x-2">
-						<JsonView src={props.cacheEntry.data.body} />
+						<JsonView src={props.cacheEntry.data.body} collapsed={1} />
 					</div>
 				</DialogContent>
 			</Dialog>

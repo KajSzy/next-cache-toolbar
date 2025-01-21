@@ -1,10 +1,11 @@
-import { BracesIcon, PanelBottomCloseIcon } from "lucide-react";
+import { Layers3Icon, PanelBottomCloseIcon } from "lucide-react";
 import { getCacheFiles } from "./actions/getCacheEntries";
 import { TableHead, TableHeader, TableRow } from "./components/ui/table";
 import { CachePanelContextProvider } from "./feature/cache-panel/cache-panel-context";
 import { CachePanelTable } from "./feature/cache-panel/cache-panel-table";
 import { CachePanelTrigger } from "./feature/cache-panel/cache-panel-trigger";
 import { CacheTable } from "./feature/cache-panel/cache-panel-wrapper";
+import { CachePurgeButton } from "./feature/cache-panel/cache-purge-button";
 import { RefreshDataButton } from "./feature/cache-panel/cache-refresh-data";
 import { CachePanelHead } from "./feature/cache-table/cache-panel-head";
 
@@ -19,11 +20,17 @@ type Props = {
 	 * @default 10000
 	 */
 	interval?: number;
+	/**
+	 * If true, the purge button will be shown.
+	 * @default false
+	 */
+	purgeButton?: boolean;
 };
 
 export async function NextCacheToolbar({
 	autoRefresh = false,
 	interval = 10000,
+	purgeButton = false,
 }: Props) {
 	const files = await getCacheFiles();
 
@@ -31,7 +38,7 @@ export async function NextCacheToolbar({
 		<div id="next-cache-toolbar" className="nct-text-primary nct-font-mono">
 			<CachePanelContextProvider entries={files ?? []}>
 				<CachePanelTrigger className="nct-fixed nct-rounded-full nct-bottom-4 nct-right-4 nct-bg-gradient-to-r nct-from-fuchsia-500 nct-to-cyan-500">
-					<BracesIcon />
+					<Layers3Icon />
 				</CachePanelTrigger>
 				<CacheTable>
 					<TableHeader className="nct-sticky nct-top-0 nct-bg-background">
@@ -61,6 +68,7 @@ export async function NextCacheToolbar({
 										enabled={autoRefresh}
 										interval={interval}
 									/>
+									{purgeButton && <CachePurgeButton />}
 									<CachePanelTrigger>
 										<PanelBottomCloseIcon />
 									</CachePanelTrigger>

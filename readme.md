@@ -42,3 +42,32 @@ export default function Layout({ children }) {
   );
 }
 ```
+
+## How does `data cache` work?
+
+There are two cases when `data cache` is used:
+ - wrapping any function with `unstable_cache`
+ - adding `next` options to `fetch` call
+
+Both cases will store returned data inside `.next/cache/fetch-cache` folder in format 
+
+```json
+{
+  "kind": "FETCH",
+  "revalidate": 30,
+  "tags": [],
+  "data": {
+    "body": "...",
+    "headers": {},
+    "status": 200,
+    "url": "..."
+  }
+}
+```
+
+There is one caveat, when using `unstable_cache` stored data will do not have any headers while body will be in plain JSON.
+But when using `fetch` with `next` options all headers from response will be present and `body` will be encoded using base64.
+Nevertheless both of these approaches stores all data as well as `revalidate` time and `tags`.
+
+File are named randomly and do not contain any extension.
+

@@ -57,7 +57,7 @@ const sortCacheEntryByKey = (
 			}
 			return a.tags[0]?.localeCompare(b.tags[0] ?? "") ?? 0;
 		case "timestamp": {
-			if (!a.data?.headers.date || !b.data?.headers.date) {
+			if (!a.data?.headers?.date || !b.data?.headers?.date) {
 				return 0;
 			}
 			return (
@@ -83,7 +83,14 @@ export const CachePanelContextProvider = (
 
 	const toggleOpen = () => {
 		setIsOpen(!isOpen);
+		localStorage.setItem("cache-panel-open", (!isOpen).toString());
 	};
+
+	React.useEffect(() => {
+		if (typeof window !== "undefined") {
+			setIsOpen(localStorage.getItem("cache-panel-open") === "true");
+		}
+	}, []);
 
 	const addFilter = (key: keyof CacheEntriesFilter, value: string) => {
 		setFilters((prev) => {

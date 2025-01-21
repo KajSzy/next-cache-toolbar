@@ -13,28 +13,32 @@ const stringToJSONSchema = z.string().transform((str, ctx) => {
 	}
 });
 
-const decodeBody = (body: string) => {
-	try {
-		return atob(body);
-	} catch (error) {
-		throw Error("Body is not valid base64 string", {
-			cause: error,
-		});
-	}
-};
+const unstableCacheFileSchema = z.object({
+	data: z.object({
+		body: z.string(),
+		headers: z.object({}).transform(() => null),
+		status: z.number(),
+		url: z.literal(""),
+	}),
+	kind: z.union([z.literal("FETCH"), z.unknown()]),
+	revalidate: z.number().optional(),
+	tags: z.array(z.string()).optional().default([]),
+});
+
+const fetchCacheFileSchema = z.object({
+	data: z.object({
+		body: z.string(),
+		headers: z.record(z.string(), z.string()),
+		status: z.number(),
+		url: z.string().url(),
+	}),
+	kind: z.union([z.literal("FETCH"), z.unknown()]),
+	revalidate: z.number().optional(),
+	tags: z.array(z.string()).optional().default([]),
+});
 
 export const nextCacheFileSchema = z
-	.object({
-		data: z.object({
-			body: z.string(),
-			headers: z.record(z.string(), z.string()),
-			status: z.number(),
-			url: z.string(),
-		}),
-		kind: z.union([z.literal("FETCH"), z.unknown()]),
-		revalidate: z.number().optional(),
-		tags: z.array(z.string()).optional().default([]),
-	})
+	.union([unstableCacheFileSchema, fetchCacheFileSchema])
 	.transform((cacheEntry) => {
 		const body =
 			cacheEntry.data.url !== ""
@@ -42,8 +46,13 @@ export const nextCacheFileSchema = z
 				: stringToJSONSchema.parse(cacheEntry.data.body);
 		return {
 			...cacheEntry,
+			timestamp: cacheEntry.data.headers?.date
+				? new Date(cacheEntry.data.headers?.date)
+				: new Date(),
 			data: {
 				...cacheEntry.data,
+				url:
+					cacheEntry.data.url === "" ? "unstable_cache" : cacheEntry.data.url,
 				body,
 			},
 		};

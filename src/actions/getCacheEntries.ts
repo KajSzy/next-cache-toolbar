@@ -31,10 +31,18 @@ export const getCacheFiles = async () => {
 					});
 				});
 
+			const fileStats = await promises
+				.stat(`${cachePath}/${file}`)
+				.catch((err) => {
+					throw Error(`Error reading file ${file}`, {
+						cause: err,
+					});
+				});
+
 			const jsonData = JSON.parse(fileContent.toString());
 
 			const cacheEntry = nextCacheFileSchema.parse(jsonData);
-			cacheFiles.set(file, cacheEntry);
+			cacheFiles.set(file, { ...cacheEntry, timestamp: fileStats.birthtime });
 		} catch (error) {
 			if (error instanceof ZodError) {
 				const issues = error.issues;
