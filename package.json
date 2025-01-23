@@ -4,7 +4,8 @@
 	"description": "Toolbar with all cached data in Next.js app router",
 	"scripts": {
 		"prepublish": "npm run build",
-		"build": "rimraf dist && bunchee && tailwindcss -i src/style.css -o dist/style.css --minify",
+		"prebuild": "rimraf dist",
+		"build": "bunchee && tailwindcss -i src/style.css -o dist/style.css --minify",
 		"dev": "concurrently --names 'compile,tailwind,type-check' --prefix-colors 'green,white,white' --kill-others 'npm run dev:compile' 'npm run dev:tailwind' 'npm run dev:type-check'",
 		"dev:type-check": "tsc --watch --preserveWatchOutput --noEmit",
 		"dev:compile": "bunchee --watch",
@@ -57,9 +58,7 @@
 		"react": "^18 || ^19",
 		"react-dom": "^18 || ^19"
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/es/index.mjs",
 	"types": "./dist/cjs/index.d.ts",
