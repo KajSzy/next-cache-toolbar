@@ -2,10 +2,11 @@
 
 A toolbar that helps to identify [data cache](https://nextjs.org/docs/app/building-your-application/caching#data-cache) entries
 
-![Example](./assets/example_image.png)
+![Example app](./assets/app.jpg)
 
-![Example](./assets/body_preview.png)
+![Example toolbar open](./assets/app-toolbar-open.jpg)
 
+![Example body open](./assets/app-body-open.jpg)
 ## How to use it?
 
 `next-cache-toolbar` requires to use [app router](https://nextjs.org/docs/app/building-your-application/caching#data-cache)
@@ -69,5 +70,4 @@ There is one caveat, when using `unstable_cache` stored data will do not have an
 But when using `fetch` with `next` options all headers from response will be present and `body` will be encoded using base64.
 Nevertheless both of these approaches stores all data as well as `revalidate` time and `tags`.
 
-File are named randomly and do not contain any extension.
 
