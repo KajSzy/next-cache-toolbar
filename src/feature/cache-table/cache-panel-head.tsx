@@ -7,148 +7,152 @@ import { cn } from "@/utils/cn";
 import { ArrowDownAZIcon, ArrowUpAZIcon, FilterIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import {
-  CacheEntriesSorting,
-  useCachePanelContext,
+	useCachePanelContext,
+	type CacheEntriesSorting,
 } from "../cache-panel/cache-panel-context";
 
 type TableHeadProps = Omit<React.ComponentProps<typeof TableHead>, "onClick">;
 
 type Props = TableHeadProps &
-  React.PropsWithChildren<{
-    sortingProperty: CacheEntriesSorting["key"];
-    withFilter?: boolean;
-  }>;
+	React.PropsWithChildren<{
+		sortingProperty: CacheEntriesSorting["key"];
+		withFilter?: boolean;
+	}>;
 
 export const CachePanelHead = ({
-  sortingProperty,
-  children,
-  className,
-  withFilter = false,
-  ...props
+	sortingProperty,
+	children,
+	className,
+	withFilter = false,
+	...props
 }: Props) => {
-  const { setSorting, sorting, filters, addFilter, clearFilter } =
-    useCachePanelContext();
-  const [filterInputVisible, setFilterInputVisible] = useState(false);
+	const { setSorting, sorting, filters, addFilter, clearFilter } =
+		useCachePanelContext();
+	const [filterInputVisible, setFilterInputVisible] = useState(false);
 
-  const inputRef = useCallback((node: HTMLInputElement | null) => {
-    if (!node) {
-      return;
-    }
-    node.focus();
-  }, []);
+	const inputRef = useCallback((node: HTMLInputElement | null) => {
+		if (!node) {
+			return;
+		}
+		node.focus();
+	}, []);
 
-  const sortingDirection = useMemo(() => {
-    if (!sorting || sorting.key !== sortingProperty) {
-      return;
-    }
-    return sorting.direction;
-  }, [sorting, sortingProperty]);
+	const sortingDirection = useMemo(() => {
+		if (!sorting || sorting.key !== sortingProperty) {
+			return;
+		}
+		return sorting.direction;
+	}, [sorting, sortingProperty]);
 
-  const filterValue = useMemo(() => {
-    if (sortingProperty !== "url" && sortingProperty !== "tags") {
-      return;
-    }
-    return filters?.[sortingProperty] ?? "";
-  }, [sortingProperty, filters]);
+	const filterValue = useMemo(() => {
+		if (sortingProperty !== "url" && sortingProperty !== "tags") {
+			return;
+		}
+		return filters?.[sortingProperty] ?? "";
+	}, [sortingProperty, filters]);
 
-  const shouldRenderFilterIcon =
-    !filterInputVisible && withFilter && filterValue;
+	const shouldRenderFilterIcon =
+		!filterInputVisible && withFilter && filterValue;
 
-  const onHeadClick = () => {
-    if (sorting && sorting.key === sortingProperty) {
-      setSorting({
-        key: sortingProperty,
-        direction: sorting.direction === "asc" ? "desc" : "asc",
-      });
-    } else {
-      setSorting({
-        key: sortingProperty,
-        direction: "asc",
-      });
-    }
-  };
+	const onHeadClick = () => {
+		if (sorting && sorting.key === sortingProperty) {
+			setSorting({
+				key: sortingProperty,
+				direction: sorting.direction === "asc" ? "desc" : "asc",
+			});
+		} else {
+			setSorting({
+				key: sortingProperty,
+				direction: "asc",
+			});
+		}
+	};
 
-  const onFilterInputKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (sortingProperty !== "url" && sortingProperty !== "tags") {
-      return;
-    }
+	const onFilterInputKeyDown = (
+		event: React.KeyboardEvent<HTMLInputElement>,
+	) => {
+		if (sortingProperty !== "url" && sortingProperty !== "tags") {
+			return;
+		}
 
-    // clear value on esc
-    if (event.key === "Escape") {
-      clearFilter(sortingProperty);
-      setFilterInputVisible(false);
-    }
-  };
+		// clear value on esc
+		if (event.key === "Escape") {
+			clearFilter(sortingProperty);
+			setFilterInputVisible(false);
+		}
+	};
 
-  const onFilterInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (sortingProperty !== "url" && sortingProperty !== "tags") {
-      return;
-    }
+	const onFilterInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (sortingProperty !== "url" && sortingProperty !== "tags") {
+			return;
+		}
 
-    addFilter(sortingProperty, event.target.value);
-  };
+		addFilter(sortingProperty, event.target.value);
+	};
 
-  const onFilterInputBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (sortingProperty !== "url" && sortingProperty !== "tags") {
-      return;
-    }
+	const onFilterInputBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (sortingProperty !== "url" && sortingProperty !== "tags") {
+			return;
+		}
 
-    if (event.target.value === "") {
-      setFilterInputVisible(false);
-    }
-  };
+		if (event.target.value === "") {
+			setFilterInputVisible(false);
+		}
+	};
 
-  const isActiveSortProperty = sorting?.key === sortingProperty;
-  const ariaSortAttribute = isActiveSortProperty
-    ? sortingDirection === "asc"
-        ? 'ascending'
-        : 'descending'
-    : undefined;
+	const isActiveSortProperty = sorting?.key === sortingProperty;
+	const ariaSortAttribute = isActiveSortProperty
+		? sortingDirection === "asc"
+			? "ascending"
+			: "descending"
+		: undefined;
 
-  return (
-    <TableHead className={cn("group", className)} {...props} aria-sort={ariaSortAttribute}>
-      <div
-        className={cn(
-          "nct-flex nct-items-center nct-gap-2 nct-py-2",
-          isActiveSortProperty && "nct-underline"
-        )}
-      >
-        <Button
-          variant="linkTable"
-          size="text"
-          onClick={onHeadClick}
-          onKeyDown={onHeadClick}
-        >
-          {children}
-        </Button>
-        {sortingDirection === "asc" && <ArrowDownAZIcon aria-hidden />}
-        {sortingDirection === "desc" && <ArrowUpAZIcon aria-hidden />}
-        {withFilter && (
-          <div className="ml-auto">
-            {!filterInputVisible && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn()}
-                onClick={() => setFilterInputVisible(true)}
-              >
-                <FilterIcon />
-              </Button>
-            )}
-            {filterInputVisible && (
-              <Input
-                onKeyDown={onFilterInputKeyDown}
-                value={filterValue}
-                onChange={onFilterInputChange}
-                onBlur={onFilterInputBlur}
-                ref={inputRef}
-              />
-            )}
-          </div>
-        )}
-      </div>
-    </TableHead>
-  );
+	return (
+		<TableHead
+			className={cn("group", className)}
+			{...props}
+			aria-sort={ariaSortAttribute}
+		>
+			<div
+				className={cn(
+					"nct-flex nct-items-center nct-gap-2 nct-py-2",
+					isActiveSortProperty && "nct-underline",
+				)}
+			>
+				<Button
+					variant="linkTable"
+					size="text"
+					onClick={onHeadClick}
+					onKeyDown={onHeadClick}
+				>
+					{children}
+				</Button>
+				{sortingDirection === "asc" && <ArrowDownAZIcon aria-hidden />}
+				{sortingDirection === "desc" && <ArrowUpAZIcon aria-hidden />}
+				{withFilter && (
+					<div className="ml-auto">
+						{!filterInputVisible && (
+							<Button
+								variant="ghost"
+								size="icon"
+								className={cn()}
+								onClick={() => setFilterInputVisible(true)}
+							>
+								<FilterIcon />
+							</Button>
+						)}
+						{filterInputVisible && (
+							<Input
+								onKeyDown={onFilterInputKeyDown}
+								value={filterValue}
+								onChange={onFilterInputChange}
+								onBlur={onFilterInputBlur}
+								ref={inputRef}
+							/>
+						)}
+					</div>
+				)}
+			</div>
+		</TableHead>
+	);
 };
