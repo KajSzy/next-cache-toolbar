@@ -11,16 +11,17 @@ import { useCachePanelContext } from "./cache-panel-context";
 type Props = {
 	interval: number;
 	enabled: boolean;
+	distDir: string;
 };
 
-export function RefreshDataButton({ enabled, interval }: Props) {
+export function RefreshDataButton({ enabled, interval, distDir }: Props) {
 	const { setEntries } = useCachePanelContext();
 	const [isPending, startTransition] = useTransition();
 	const pathname = usePathname();
 
 	const refreshData = () => {
 		startTransition(async () => {
-			const files = await serverActions.getCacheFiles();
+			const files = await serverActions.getCacheFiles(distDir);
 			setEntries(files ?? []);
 		});
 	};

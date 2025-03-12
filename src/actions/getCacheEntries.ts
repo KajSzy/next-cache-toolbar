@@ -7,9 +7,8 @@ import {
 	nextCacheFileSchema,
 } from "./cache-entries-schema";
 
-const cachePath = ".next/cache/fetch-cache";
-
-export const getCacheFiles = async () => {
+export const getCacheFiles = async (distDir: string) => {
+	const cachePath = `${distDir}/cache/fetch-cache`;
 	if (!existsSync(cachePath)) {
 		return;
 	}

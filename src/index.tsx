@@ -25,14 +25,20 @@ type Props = {
 	 * @default false
 	 */
 	purgeButton?: boolean;
+	/**
+	 * Output path for next build, should be in sync with `distDir` parameter from next.config
+	 * @default ".next"
+	 */
+	distDir?: string;
 };
 
 export async function NextCacheToolbar({
 	autoRefresh = false,
 	interval = 10000,
 	purgeButton = false,
+	distDir = ".next",
 }: Props) {
-	const files = await getCacheFiles();
+	const files = await getCacheFiles(distDir);
 
 	return (
 		<div id="next-cache-toolbar" className="nct-text-primary nct-font-mono">
@@ -67,6 +73,7 @@ export async function NextCacheToolbar({
 									<RefreshDataButton
 										enabled={autoRefresh}
 										interval={interval}
+										distDir={distDir}
 									/>
 									{purgeButton && <CachePurgeButton />}
 									<CachePanelTrigger>
