@@ -1,0 +1,15 @@
+name: Setup monorepo
+description: Checkout, Node 20 from package.json, Corepack pnpm, frozen install
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.0
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      with:
+        node-version-file: package.json
+        cache: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository && 'pnpm' || '' }}
+    - run: corepack enable
+      shell: bash
+    - run: pnpm install --frozen-lockfile
+      shell: bash
