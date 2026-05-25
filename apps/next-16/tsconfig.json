@@ -26,10 +26,15 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "~/github-api": [
+        "../../packages/github-api/src/index.ts"
+      ],
+      "~/github-api/*": [
+        "../../packages/github-api/src/*"
       ]
     },
-    "baseUrl": ".",
-    "rootDir": "."
+    "baseUrl": "."
   },
   "include": [
     "**/*.ts",

@@ -14,7 +14,10 @@ export const metadata: Metadata = {
 
 let Toolbar: React.ComponentType = () => null;
 
-if (process.env.NEXT_PUBLIC_IS_LOCALHOST === "true") {
+if (
+	process.env.NODE_ENV === "development" ||
+	process.env.NEXT_PUBLIC_IS_LOCALHOST === "true"
+) {
 	Toolbar = dynamic(() => import("./toolbar"));
 }
 
