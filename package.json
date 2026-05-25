@@ -30,7 +30,7 @@
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
 		"lucide-react": "^0.454.0",
-		"next": "^14 || ^15",
+		"next": "^14 || ^15 || ^16",
 		"react": "^18 || ^19",
 		"react-dom": "^18 || ^19",
 		"react18-json-view": "^0.2.7",
@@ -54,7 +54,7 @@
 		"typescript": "^5.7.2"
 	},
 	"peerDependencies": {
-		"next": "^14.1 || ^15",
+		"next": "^14.1 || ^15 || ^16",
 		"react": "^18 || ^19",
 		"react-dom": "^18 || ^19"
 	},
