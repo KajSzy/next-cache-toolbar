@@ -1,44 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { repoSchema } from "@/utils/schemas";
 import { GitFork, Star } from "lucide-react";
-import { unstable_cache } from "next/cache";
 import Link from "next/link";
+import { getMostPopularRepositories } from "./getMostPopularRepositories";
 
 const orgsToFetchRepos = ["vercel", "facebook", "shadcn-ui", "pmndrs"];
-
-const getMostPopularRepositories = (owner: string) =>
-	unstable_cache(
-		async () => {
-			try {
-				console.log(`Fetching repositories from GitHub API for ${owner}`);
-				const url = new URL("https://api.github.com/search/repositories");
-				url.searchParams.set("q", `org:${owner}`);
-				url.searchParams.set("sort", "stars");
-				url.searchParams.set("direction", "desc");
-				url.searchParams.set("per_page", "5");
-				const result = await fetch(url, {
-					headers: {
-						Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-					},
-				});
-				if (!result.ok) {
-					throw Error("Error fetching repositories", {
-						cause: result.statusText,
-					});
-				}
-				const data = await result.json();
-				return repoSchema.array().parse(data.items);
-			} catch (error) {
-				console.error(error);
-				throw Error("Error fetching issues");
-			}
-		},
-		[owner],
-		{
-			revalidate: 30,
-			tags: ["repos", owner],
-		},
-	)();
 
 export const dynamic = "force-dynamic";
 
