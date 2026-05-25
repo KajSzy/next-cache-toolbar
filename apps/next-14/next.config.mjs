@@ -2,7 +2,7 @@
 
 const nextConfig = {
 	reactStrictMode: true,
-	transpilePackages: ["geist"],
+	transpilePackages: ["geist", "github-api"],
 	logging: {
 		fetches: {
 			fullUrl: true,
