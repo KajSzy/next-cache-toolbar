@@ -19,7 +19,7 @@
 		"url": "https://github.com/KajSzy/next-cache-toolbar"
 	},
 	"engines": {
-		"node": ">=20",
+		"node": "20",
 		"pnpm": ">=9"
 	},
 	"license": "MIT",
