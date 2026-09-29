@@ -111,8 +111,8 @@ export const CachePanelContextProvider = (
 			if (!prev) {
 				return;
 			}
-			delete prev[key];
-			return prev;
+			const { [key]: _removed, ...rest } = prev;
+			return rest;
 		});
 	};
 
