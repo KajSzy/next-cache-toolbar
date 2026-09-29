@@ -11,6 +11,8 @@ A toolbar that helps to identify [data cache](https://nextjs.org/docs/app/buildi
 
 `next-cache-toolbar` requires to use [app router](https://nextjs.org/docs/app/building-your-application/caching#data-cache)
 
+Supported versions: Next.js 15 and 16 (including canary) with React 19. Next.js 14 no longer gets updates and is not supported anymore, use `next-cache-toolbar@0.4` with it.
+
 Create file that we will lazy loading later to avoid bundling `next-cache-toolbar` in production
 ```jsx
 // app/toolbar.jsx
