@@ -1,12 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import type React from "react";
+import { Button, type ButtonProps } from "@/components/ui/button";
 import { useCachePanelContext } from "./cache-panel-context";
 
-type Props = React.PropsWithChildren<
-	React.ButtonHTMLAttributes<HTMLButtonElement>
->;
+type Props = ButtonProps;
 
 export function CachePanelTrigger(props: Props) {
 	const { toggleOpen } = useCachePanelContext();

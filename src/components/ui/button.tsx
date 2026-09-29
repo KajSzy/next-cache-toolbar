@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
 const buttonVariants = cva(
-	"nct-inline-flex nct-items-center nct-justify-center nct-whitespace-nowrap nct-rounded-md nct-text-sm nct-font-medium nct-ring-offset-background nct-transition-colors focus-visible:nct-outline-none focus-visible:nct-ring-2 focus-visible:nct-ring-ring focus-visible:nct-ring-offset-2 disabled:nct-pointer-events-none disabled:nct-opacity-50",
+	"nct-inline-flex nct-items-center nct-justify-center nct-whitespace-nowrap nct-text-sm nct-font-medium nct-ring-offset-background nct-transition-colors focus-visible:nct-outline-none focus-visible:nct-ring-2 focus-visible:nct-ring-ring focus-visible:nct-ring-offset-2 disabled:nct-pointer-events-none disabled:nct-opacity-50",
 	{
 		variants: {
 			variant: {
@@ -22,15 +22,22 @@ const buttonVariants = cva(
 			},
 			size: {
 				default: "nct-h-10 nct-px-4 nct-py-2",
-				sm: "nct-h-9 nct-rounded-md nct-px-3",
-				lg: "nct-h-11 nct-rounded-md nct-px-8",
+				sm: "nct-h-9 nct-px-3",
+				lg: "nct-h-11 nct-px-8",
 				icon: "nct-h-10 nct-w-10",
 				text: "h-auto",
+			},
+			// Radius is a variant rather than a className override: conflicting classes
+			// are not merged, so two nct-rounded-* classes would resolve by stylesheet order.
+			rounded: {
+				md: "nct-rounded-md",
+				full: "nct-rounded-full",
 			},
 		},
 		defaultVariants: {
 			variant: "default",
 			size: "default",
+			rounded: "md",
 		},
 	},
 );
@@ -42,11 +49,11 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, variant, size, asChild = false, ...props }, ref) => {
+	({ className, variant, size, rounded, asChild = false, ...props }, ref) => {
 		const Comp = asChild ? Slot : "button";
 		return (
 			<Comp
-				className={cn(buttonVariants({ variant, size, className }))}
+				className={cn(buttonVariants({ variant, size, rounded, className }))}
 				ref={ref}
 				{...props}
 			/>

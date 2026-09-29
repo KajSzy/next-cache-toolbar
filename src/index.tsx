@@ -43,7 +43,10 @@ export async function NextCacheToolbar({
 	return (
 		<div id="next-cache-toolbar" className="nct-text-primary nct-font-mono">
 			<CachePanelContextProvider entries={files ?? []}>
-				<CachePanelTrigger className="nct-fixed nct-rounded-full nct-bottom-4 nct-right-4 nct-bg-gradient-to-r nct-from-fuchsia-500 nct-to-cyan-500">
+				<CachePanelTrigger
+					rounded="full"
+					className="nct-fixed nct-bottom-4 nct-right-4 nct-bg-gradient-to-r nct-from-fuchsia-500 nct-to-cyan-500"
+				>
 					<Layers3Icon />
 				</CachePanelTrigger>
 				<CacheTable>
