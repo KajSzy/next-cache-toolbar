@@ -35,7 +35,9 @@ type Props = {
 
 // Reading cache entries is uncached I/O. With `cacheComponents` enabled it has to
 // happen inside <Suspense>, otherwise the toolbar would block the whole route.
-export function NextCacheToolbar(props: Props) {
+// Kept async so the public type stays the same: React 18 projects suppress the
+// async component type error with `@ts-expect-error`, which fails when unused.
+export async function NextCacheToolbar(props: Props) {
 	return (
 		<Suspense fallback={null}>
 			<NextCacheToolbarContent {...props} />
