@@ -25,7 +25,9 @@ export default function Toolbar() {
 
 ```jsx
 // app/layout.jsx
-let Toolbar: React.ComponentType = () => null;
+import dynamic from "next/dynamic";
+
+let Toolbar = () => null;
 
 if (process.env.NODE_ENV === "development") {
 	Toolbar = dynamic(() => import("./toolbar"));
@@ -43,6 +45,10 @@ export default function Layout({ children }) {
   );
 }
 ```
+
+Keep the check on `process.env.NODE_ENV`. Next.js replaces it with a constant during `next build`, so the `import("./toolbar")` branch is removed from production builds together with the toolbar's code, styles and server actions.
+
+Do not gate the toolbar on your own environment variable alone (e.g. `process.env.NEXT_PUBLIC_SHOW_TOOLBAR === "true"`). If that variable is not set while running `next build`, the check stays a runtime lookup, and the toolbar is bundled into production even though it never renders.
 
 ## How does `data cache` work?
 
