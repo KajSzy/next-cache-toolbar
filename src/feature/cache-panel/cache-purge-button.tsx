@@ -5,11 +5,15 @@ import { Button } from "@/components/ui/button";
 import { BombIcon } from "lucide-react";
 import { useCachePanelContext } from "./cache-panel-context";
 
-export function CachePurgeButton() {
+type Props = {
+	distDir: string;
+};
+
+export function CachePurgeButton({ distDir }: Props) {
 	const { setEntries } = useCachePanelContext();
 
 	const purgeCache = () => {
-		serverActions.purgeCache().then(() => {
+		serverActions.purgeCache(distDir).then(() => {
 			setEntries([]);
 		});
 	};

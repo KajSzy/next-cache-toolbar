@@ -1,9 +1,11 @@
 "use server";
 
 import { promises } from "node:fs";
+import { getFetchCachePath } from "../utils/fetch-cache-path";
 
-const cachePath = ".next/cache/fetch-cache";
-
-export const purgeCache = async () => {
-	await promises.rm(cachePath, { recursive: true, force: true });
+export const purgeCache = async (distDir: string) => {
+	await promises.rm(getFetchCachePath(distDir), {
+		recursive: true,
+		force: true,
+	});
 };

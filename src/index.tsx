@@ -75,7 +75,7 @@ export async function NextCacheToolbar({
 										interval={interval}
 										distDir={distDir}
 									/>
-									{purgeButton && <CachePurgeButton />}
+									{purgeButton && <CachePurgeButton distDir={distDir} />}
 									<CachePanelTrigger>
 										<PanelBottomCloseIcon />
 									</CachePanelTrigger>
