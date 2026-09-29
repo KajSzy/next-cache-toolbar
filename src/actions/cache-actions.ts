@@ -46,7 +46,8 @@ export const getCacheFiles = async (distDir: string) => {
 			const jsonData = JSON.parse(fileContent.toString());
 
 			const cacheEntry = nextCacheFileSchema.parse(jsonData);
-			cacheFiles.set(file, { ...cacheEntry, timestamp: fileStats.birthtime });
+			// mtime, not birthtime: Next.js rewrites the same file when an entry is revalidated
+			cacheFiles.set(file, { ...cacheEntry, timestamp: fileStats.mtime });
 		} catch (error) {
 			if (error instanceof ZodError) {
 				const issues = error.issues;
