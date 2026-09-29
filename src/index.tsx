@@ -1,5 +1,5 @@
 import { Layers3Icon, PanelBottomCloseIcon } from "lucide-react";
-import { getCacheFiles } from "./actions/getCacheEntries";
+import { getCacheFiles } from "./actions/cache-actions";
 import { TableHead, TableHeader, TableRow } from "./components/ui/table";
 import { CachePanelContextProvider } from "./feature/cache-panel/cache-panel-context";
 import { CachePanelTable } from "./feature/cache-panel/cache-panel-table";

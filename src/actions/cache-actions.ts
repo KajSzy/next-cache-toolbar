@@ -1,5 +1,9 @@
 "use server";
 
+// All server actions live in this single module: when helpers are shared between
+// several "use server" modules, bunchee exports them from a "use server" chunk and
+// Next.js registers them as (non-async) server actions.
+
 import { existsSync, promises } from "node:fs";
 import { ZodError } from "zod";
 import { getFetchCachePath } from "../utils/fetch-cache-path";
@@ -53,4 +57,11 @@ export const getCacheFiles = async (distDir: string) => {
 	}
 
 	return Array.from(cacheFiles.entries());
+};
+
+export const purgeCache = async (distDir: string) => {
+	await promises.rm(getFetchCachePath(distDir), {
+		recursive: true,
+		force: true,
+	});
 };

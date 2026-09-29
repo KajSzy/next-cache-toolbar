@@ -1,6 +1,6 @@
 "use client";
 
-import * as serverActions from "@/actions/getCacheEntries";
+import * as serverActions from "@/actions/cache-actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 import { Loader2 } from "lucide-react";

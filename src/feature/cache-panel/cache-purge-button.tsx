@@ -1,6 +1,6 @@
 "use client";
 
-import * as serverActions from "@/actions/purge-cache";
+import * as serverActions from "@/actions/cache-actions";
 import { Button } from "@/components/ui/button";
 import { BombIcon } from "lucide-react";
 import { useCachePanelContext } from "./cache-panel-context";
