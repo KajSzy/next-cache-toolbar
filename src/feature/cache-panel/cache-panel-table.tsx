@@ -14,8 +14,8 @@ export const CachePanelTable = () => {
 					<TableCell>No cache entries</TableCell>
 				</TableRow>
 			)}
-			{entries.map(([file, cacheEntry]) => (
-				<CacheEntry key={file} cacheEntry={cacheEntry} />
+			{entries.map((cacheEntry) => (
+				<CacheEntry key={cacheEntry.id} cacheEntry={cacheEntry} />
 			))}
 		</TableBody>
 	);

@@ -21,8 +21,7 @@ export function RefreshDataButton({ enabled, interval, distDir }: Props) {
 
 	const refreshData = () => {
 		startTransition(async () => {
-			const files = await serverActions.getCacheFiles(distDir);
-			setEntries(files ?? []);
+			setEntries(await serverActions.getCacheEntries(distDir));
 		});
 	};
 

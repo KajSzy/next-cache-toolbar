@@ -1,5 +1,6 @@
 import { Layers3Icon, PanelBottomCloseIcon } from "lucide-react";
-import { getCacheFiles } from "./actions/cache-actions";
+import { Suspense } from "react";
+import { getCacheEntries } from "./actions/cache-actions";
 import { TableHead, TableHeader, TableRow } from "./components/ui/table";
 import { CachePanelContextProvider } from "./feature/cache-panel/cache-panel-context";
 import { CachePanelTable } from "./feature/cache-panel/cache-panel-table";
@@ -32,17 +33,29 @@ type Props = {
 	distDir?: string;
 };
 
-export async function NextCacheToolbar({
+// Reading cache entries is uncached I/O. With `cacheComponents` enabled it has to
+// happen inside <Suspense>, otherwise the toolbar would block the whole route.
+// Kept async so the public type stays the same: React 18 projects suppress the
+// async component type error with `@ts-expect-error`, which fails when unused.
+export async function NextCacheToolbar(props: Props) {
+	return (
+		<Suspense fallback={null}>
+			<NextCacheToolbarContent {...props} />
+		</Suspense>
+	);
+}
+
+async function NextCacheToolbarContent({
 	autoRefresh = false,
 	interval = 10000,
 	purgeButton = false,
 	distDir = ".next",
 }: Props) {
-	const files = await getCacheFiles(distDir);
+	const entries = await getCacheEntries(distDir);
 
 	return (
 		<div id="next-cache-toolbar" className="nct-text-primary nct-font-mono">
-			<CachePanelContextProvider entries={files ?? []}>
+			<CachePanelContextProvider entries={entries}>
 				<CachePanelTrigger
 					rounded="full"
 					className="nct-fixed nct-bottom-4 nct-right-4 nct-bg-gradient-to-r nct-from-fuchsia-500 nct-to-cyan-500"
@@ -53,14 +66,15 @@ export async function NextCacheToolbar({
 					<TableHeader className="nct-sticky nct-top-0 nct-bg-background">
 						<TableRow>
 							<CachePanelHead
-								sortingProperty="url"
+								sortingProperty="label"
 								className="nct-w-[300px]"
 								withFilter
 							>
-								URL
+								URL / Function
 							</CachePanelHead>
+							<CachePanelHead sortingProperty="source">Source</CachePanelHead>
 							<CachePanelHead sortingProperty="revalidate">
-								Revalidate (ms)
+								Revalidate (s)
 							</CachePanelHead>
 							<CachePanelHead sortingProperty="tags" withFilter>
 								Tags
