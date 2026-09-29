@@ -45,7 +45,7 @@ export const CachePanelHead = ({
 	}, [sorting, sortingProperty]);
 
 	const filterValue = useMemo(() => {
-		if (sortingProperty !== "url" && sortingProperty !== "tags") {
+		if (sortingProperty !== "label" && sortingProperty !== "tags") {
 			return;
 		}
 		return filters?.[sortingProperty] ?? "";
@@ -71,7 +71,7 @@ export const CachePanelHead = ({
 	const onFilterInputKeyDown = (
 		event: React.KeyboardEvent<HTMLInputElement>,
 	) => {
-		if (sortingProperty !== "url" && sortingProperty !== "tags") {
+		if (sortingProperty !== "label" && sortingProperty !== "tags") {
 			return;
 		}
 
@@ -83,7 +83,7 @@ export const CachePanelHead = ({
 	};
 
 	const onFilterInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (sortingProperty !== "url" && sortingProperty !== "tags") {
+		if (sortingProperty !== "label" && sortingProperty !== "tags") {
 			return;
 		}
 
@@ -91,7 +91,7 @@ export const CachePanelHead = ({
 	};
 
 	const onFilterInputBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (sortingProperty !== "url" && sortingProperty !== "tags") {
+		if (sortingProperty !== "label" && sortingProperty !== "tags") {
 			return;
 		}
 

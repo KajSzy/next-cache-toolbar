@@ -1,24 +1,24 @@
 "use client";
 
-import type { NextCacheFileData } from "@/actions/cache-entries-schema";
+import type { CachePanelEntry } from "@/actions/cache-panel-entry";
 import React, { createContext, useMemo, useState } from "react";
 
 // TODO: store panel open/close in local storage
 
 export type CacheEntriesSorting = {
-	key: "url" | "revalidate" | "tags" | "timestamp";
+	key: "label" | "source" | "revalidate" | "tags" | "timestamp";
 	direction: "asc" | "desc";
 };
 
-export type CacheEntriesFilter = Partial<Record<"url" | "tags", string>>;
+export type CacheEntriesFilter = Partial<Record<"label" | "tags", string>>;
 
 interface CachePanelContextProps {
 	// panel open state
 	isOpen: boolean;
 	toggleOpen: () => void;
 	// entries
-	entries: [string, NextCacheFileData][];
-	setEntries: (value: [string, NextCacheFileData][]) => void;
+	entries: CachePanelEntry[];
+	setEntries: (value: CachePanelEntry[]) => void;
 	// sorting value
 	sorting?: CacheEntriesSorting;
 	setSorting: (value?: CacheEntriesSorting) => void;
@@ -40,15 +40,14 @@ const CachePanelContext = createContext<CachePanelContextProps>({
 
 const sortCacheEntryByKey = (
 	key: CacheEntriesSorting["key"],
-	a: NextCacheFileData,
-	b: NextCacheFileData,
+	a: CachePanelEntry,
+	b: CachePanelEntry,
 ) => {
 	switch (key) {
-		case "url":
-			if (!a.data || !b.data) {
-				return 0;
-			}
-			return a.data.url.localeCompare(b.data.url);
+		case "label":
+			return a.label.localeCompare(b.label);
+		case "source":
+			return a.source.localeCompare(b.source);
 		case "revalidate":
 			return (a.revalidate ?? 0) - (b.revalidate ?? 0);
 		case "tags":
@@ -56,15 +55,8 @@ const sortCacheEntryByKey = (
 				return 0;
 			}
 			return a.tags[0]?.localeCompare(b.tags[0] ?? "") ?? 0;
-		case "timestamp": {
-			if (!a.data?.headers?.date || !b.data?.headers?.date) {
-				return 0;
-			}
-			return (
-				new Date(b.data.headers.date).getTime() -
-				new Date(a.data.headers.date).getTime()
-			);
-		}
+		case "timestamp":
+			return b.timestamp.getTime() - a.timestamp.getTime();
 	}
 };
 
@@ -72,7 +64,7 @@ export const useCachePanelContext = () => React.useContext(CachePanelContext);
 
 export const CachePanelContextProvider = (
 	props: React.PropsWithChildren<{
-		entries: Array<[string, NextCacheFileData]>;
+		entries: CachePanelEntry[];
 	}>,
 ) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -121,11 +113,11 @@ export const CachePanelContextProvider = (
 
 		if (filters) {
 			copiedEntries = copiedEntries.filter((entry) => {
-				const { tags: tagsFilter, url: urlFilter } = filters;
-				if (tagsFilter && !entry[1].tags.some((tag) => tag.match(tagsFilter))) {
+				const { tags: tagsFilter, label: labelFilter } = filters;
+				if (tagsFilter && !entry.tags.some((tag) => tag.match(tagsFilter))) {
 					return false;
 				}
-				if (urlFilter && !entry[1].data.url.match(urlFilter)) {
+				if (labelFilter && !entry.label.match(labelFilter)) {
 					return false;
 				}
 				return true;
@@ -138,9 +130,7 @@ export const CachePanelContextProvider = (
 
 		const { key, direction } = sorting;
 		return copiedEntries.toSorted((a, b) => {
-			return (
-				sortCacheEntryByKey(key, a[1], b[1]) * (direction === "asc" ? 1 : -1)
-			);
+			return sortCacheEntryByKey(key, a, b) * (direction === "asc" ? 1 : -1);
 		});
 	}, [entries, sorting, filters]);
 

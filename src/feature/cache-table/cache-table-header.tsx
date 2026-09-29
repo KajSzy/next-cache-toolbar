@@ -5,7 +5,7 @@ export const CacheTableHeader = (props: React.PropsWithChildren) => {
 	return (
 		<TableHeader className="nct-sticky nct-top-0 nct-bg-background">
 			<TableRow>
-				<CachePanelHead sortingProperty="url" className="nct-w-[300px]">
+				<CachePanelHead sortingProperty="label" className="nct-w-[300px]">
 					URL
 				</CachePanelHead>
 				<CachePanelHead sortingProperty="revalidate">Revalidate</CachePanelHead>

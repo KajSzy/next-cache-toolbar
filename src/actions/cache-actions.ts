@@ -6,13 +6,16 @@
 
 import { existsSync, promises } from "node:fs";
 import { ZodError } from "zod";
+import { getUseCacheEntries } from "../use-cache/entries";
+import { purgeUseCacheEntries } from "../use-cache/registry";
 import { getFetchCachePath } from "../utils/fetch-cache-path";
 import {
 	type NextCacheFileData,
 	nextCacheFileSchema,
 } from "./cache-entries-schema";
+import type { CachePanelEntry } from "./cache-panel-entry";
 
-export const getCacheFiles = async (distDir: string) => {
+const getCacheFiles = async (distDir: string) => {
 	const cachePath = getFetchCachePath(distDir);
 	if (!existsSync(cachePath)) {
 		return;
@@ -60,7 +63,35 @@ export const getCacheFiles = async (distDir: string) => {
 	return Array.from(cacheFiles.entries());
 };
 
+const toCachePanelEntry = ([file, cacheEntry]: [
+	string,
+	NextCacheFileData,
+]): CachePanelEntry => ({
+	id: file,
+	source: cacheEntry.data.url === "unstable_cache" ? "unstable_cache" : "fetch",
+	label: cacheEntry.data.url,
+	revalidate: cacheEntry.revalidate,
+	tags: cacheEntry.tags,
+	timestamp: cacheEntry.timestamp,
+	body: cacheEntry.data.body,
+});
+
+/**
+ * Returns data cache entries (`fetch`, `unstable_cache`) stored on disk together
+ * with "use cache" entries recorded in memory.
+ */
+export const getCacheEntries = async (
+	distDir: string,
+): Promise<CachePanelEntry[]> => {
+	const [files, useCacheEntries] = await Promise.all([
+		getCacheFiles(distDir),
+		getUseCacheEntries(distDir),
+	]);
+	return [...(files ?? []).map(toCachePanelEntry), ...(useCacheEntries ?? [])];
+};
+
 export const purgeCache = async (distDir: string) => {
+	purgeUseCacheEntries();
 	await promises.rm(getFetchCachePath(distDir), {
 		recursive: true,
 		force: true,

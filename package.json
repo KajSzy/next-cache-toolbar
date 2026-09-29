@@ -75,6 +75,16 @@
 				"default": "./dist/cjs/index.js"
 			}
 		},
+		"./instrumentation": {
+			"import": {
+				"types": "./dist/es/instrumentation.d.mts",
+				"default": "./dist/es/instrumentation.mjs"
+			},
+			"require": {
+				"types": "./dist/cjs/instrumentation.d.ts",
+				"default": "./dist/cjs/instrumentation.js"
+			}
+		},
 		"./style.css": {
 			"import": {
 				"default": "./dist/style.css"
