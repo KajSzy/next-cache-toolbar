@@ -42,7 +42,9 @@ export const nextCacheFileSchema = z
 	.transform((cacheEntry) => {
 		const body =
 			cacheEntry.data.url !== ""
-				? stringToJSONSchema.parse(atob(cacheEntry.data.body))
+				? stringToJSONSchema.parse(
+						Buffer.from(cacheEntry.data.body, "base64").toString("utf8"),
+					)
 				: stringToJSONSchema.parse(cacheEntry.data.body);
 		return {
 			...cacheEntry,
