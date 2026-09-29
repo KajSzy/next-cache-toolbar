@@ -2,13 +2,14 @@
 
 import { existsSync, promises } from "node:fs";
 import { ZodError } from "zod";
+import { getFetchCachePath } from "../utils/fetch-cache-path";
 import {
 	type NextCacheFileData,
 	nextCacheFileSchema,
 } from "./cache-entries-schema";
 
 export const getCacheFiles = async (distDir: string) => {
-	const cachePath = `${distDir}/cache/fetch-cache`;
+	const cachePath = getFetchCachePath(distDir);
 	if (!existsSync(cachePath)) {
 		return;
 	}
